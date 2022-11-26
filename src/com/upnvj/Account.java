@@ -33,7 +33,11 @@ public class Account {
 }
   public void withdrawMoney(int credit){
     int tarik = credit  % 50000;
-    if (this.balance < 50000){
+    if(credit > this.balance){
+      System.out.println("Uang anda tidak cukup untuk withdraw dengan jumlah : " +credit );
+      System.out.println("Saldo anda sekarang : "+ this.balance);
+    }
+    else if (this.balance < 50000){
       System.out.println("Uang Anda Kurang dari 50.000 Rupiah Untuk Melakukan Withdraw");
     }else if(this.balance >= 50000 && tarik == 0){
       this.balance -= credit;
@@ -48,7 +52,7 @@ class Mains {
   public static void main(String[] args)  {
     Account abc = new Account(200000, 23039, 4893, "Indonesia", "David");
     System.out.println("Saldo Anda : "+ abc.getBalance());
-    abc.saveMoney(50000);
+    abc.saveMoney(50200);
     abc.withdrawMoney(250000);
     
   }
