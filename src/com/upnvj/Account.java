@@ -10,6 +10,7 @@ public class Account implements Serializable {
   private int balance;
   private int pin;
   private static int idAccount;
+  private int accountNumber;
 
   public Account(long cardNumber, String expDate, int pin, String country, String name) {
     this.balance = 100_000;
