@@ -1,26 +1,29 @@
 package com.upnvj;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Account implements Serializable {
   private static int idGenerate = 1;
   private int idAccount;
   private int balance;
   private int pin;
-  private int accountNumber;
   private String name;
-  private String country;
   private String expDate;
+  private long accountNumber;
   private long cardNumber;
+  private ArrayList<Transaction> listTransaction = new ArrayList<>();
 
-  public Account(long cardNumber, String expDate, int pin, String country, String name) {
+  public Account(long cardNumber, String expDate, int pin, long accountNumber, String name) {
     this.idAccount = idGenerate++;
     this.balance = 100_000;
     this.cardNumber = cardNumber;
     this.expDate = expDate;
     this.pin = pin;
-    this.country = country;
     this.name = name;
+    this.accountNumber = accountNumber;
   }
 
   public int getBalance() {
@@ -39,10 +42,6 @@ public class Account implements Serializable {
     return name;
   }
 
-  public String getCountry() {
-    return country;
-  }
-
   public String getExpDate() {
     return expDate;
   }
@@ -51,8 +50,28 @@ public class Account implements Serializable {
     return idAccount;
   }
 
-  public int getAccountNumber() {
+  public long getAccountNumber() {
     return accountNumber;
+  }
+
+  @SuppressWarnings("unchecked")
+  public ArrayList<Transaction> getListTransaction() {
+    try {
+      ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataTransaction.ser"));
+      ArrayList<Transaction> listTransaction = (ArrayList<Transaction>) objectIn.readObject();
+      objectIn.close();
+
+      for (Transaction transaction : listTransaction) {
+        if (transaction.getAccount().getAccountNumber() == this.getAccountNumber()) {
+          this.listTransaction.add(transaction);
+        }
+      }
+
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+
+    return this.listTransaction;
   }
 
   public void addBalance(int balance) {
