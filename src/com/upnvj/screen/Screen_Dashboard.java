@@ -4,6 +4,7 @@
  */
 package com.upnvj.screen;
 
+import javax.swing.JOptionPane;
 /**
  *
  * @author DAPIT
@@ -355,13 +356,21 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         getContentPane().add(panel_mainPanel, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_signOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signOutActionPerformed
         // TODO add your handling code here:
-        Screen_SignIn signin = new Screen_SignIn();
-        signin.setVisible(true);
-        dispose();
+        int signOutConfirm = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to sign out?", "", 0);
+        switch (signOutConfirm) {
+            case 0:
+                Screen_SignIn signin = new Screen_SignIn();
+                signin.setVisible(true);
+                dispose();
+                break;
+            default:
+                break;
+        }
     }//GEN-LAST:event_button_signOutActionPerformed
 
     private void button_topUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_topUpActionPerformed

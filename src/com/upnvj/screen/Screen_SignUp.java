@@ -199,10 +199,23 @@ public class Screen_SignUp extends javax.swing.JFrame {
         getContentPane().add(panel_main, java.awt.BorderLayout.EAST);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_signUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signUpActionPerformed
         // TODO add your handling code here:
+        // try {
+        //     String fullName = field_fullName.getText();
+        //     String exDate = field_exDate.getText();
+        //     Integer PIN = Integer.parseInt(field_PIN.getText());
+        //     Long accNum = Long.parseLong(field_accNum.getText());
+        //     Long cardNum = Long.parseLong(field_cardNum.getText());
+        //     // if(cardNum.VerifyCard.) {
+
+        //     // }
+        // } catch (Exception e) {
+        //     JOptionPane
+        // }
         Screen_Dashboard dashboard = new Screen_Dashboard();
         dashboard.setVisible(true);
         dispose();

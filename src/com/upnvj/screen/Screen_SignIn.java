@@ -154,10 +154,12 @@ public class Screen_SignIn extends javax.swing.JFrame {
         getContentPane().add(panel_main, java.awt.BorderLayout.EAST);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signInActionPerformed
         // TODO add your handling code here:
+        System.out.println(field_cardNum.getText() + " " + field_PIN.getText());
         Screen_Dashboard dashboard = new Screen_Dashboard();
         dashboard.setVisible(true);
         dispose();
