@@ -79,7 +79,7 @@ public class Screen_SignUp extends javax.swing.JFrame {
         panel_main.add(panel_signUp);
 
         panel_input.setBackground(new java.awt.Color(57, 62, 70));
-        panel_input.setPreferredSize(new java.awt.Dimension(330, 370));
+        panel_input.setPreferredSize(new java.awt.Dimension(330, 360));
 
         label_fullName.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         label_fullName.setForeground(new java.awt.Color(255, 255, 255));
@@ -87,11 +87,6 @@ public class Screen_SignUp extends javax.swing.JFrame {
 
         field_fullName.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
         field_fullName.setPreferredSize(new java.awt.Dimension(230, 30));
-        field_fullName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                field_fullNameActionPerformed(evt);
-            }
-        });
 
         label_cardNum.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         label_cardNum.setForeground(new java.awt.Color(255, 255, 255));
@@ -99,11 +94,6 @@ public class Screen_SignUp extends javax.swing.JFrame {
 
         field_cardNum.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
         field_cardNum.setPreferredSize(new java.awt.Dimension(230, 30));
-        field_cardNum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                field_cardNumActionPerformed(evt);
-            }
-        });
 
         label_exDate.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         label_exDate.setForeground(new java.awt.Color(255, 255, 255));
@@ -111,11 +101,6 @@ public class Screen_SignUp extends javax.swing.JFrame {
 
         field_exDate.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
         field_exDate.setPreferredSize(new java.awt.Dimension(230, 30));
-        field_exDate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                field_exDateActionPerformed(evt);
-            }
-        });
 
         label_accNum.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         label_accNum.setForeground(new java.awt.Color(255, 255, 255));
@@ -123,11 +108,6 @@ public class Screen_SignUp extends javax.swing.JFrame {
 
         field_accNum.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
         field_accNum.setPreferredSize(new java.awt.Dimension(230, 30));
-        field_accNum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                field_accNumActionPerformed(evt);
-            }
-        });
 
         label_PIN.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         label_PIN.setForeground(new java.awt.Color(255, 255, 255));
@@ -135,11 +115,6 @@ public class Screen_SignUp extends javax.swing.JFrame {
 
         field_PIN.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
         field_PIN.setPreferredSize(new java.awt.Dimension(230, 30));
-        field_PIN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                field_PINActionPerformed(evt);
-            }
-        });
 
         button_signUp.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         button_signUp.setText("Sign Up");
@@ -155,7 +130,7 @@ public class Screen_SignUp extends javax.swing.JFrame {
         panel_inputLayout.setHorizontalGroup(
             panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_inputLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(44, 44, 44)
                 .addGroup(panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(button_signUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(field_fullName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -168,7 +143,7 @@ public class Screen_SignUp extends javax.swing.JFrame {
                     .addComponent(field_accNum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(label_PIN, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(field_PIN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(48, 48, 48))
+                .addGap(42, 42, 42))
         );
         panel_inputLayout.setVerticalGroup(
             panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,23 +151,23 @@ public class Screen_SignUp extends javax.swing.JFrame {
                 .addComponent(label_fullName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(field_fullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(label_cardNum)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(field_cardNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(label_exDate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(field_exDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(label_accNum)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(field_accNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(label_PIN)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(field_PIN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(button_signUp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -226,32 +201,12 @@ public class Screen_SignUp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void field_fullNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_fullNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_fullNameActionPerformed
-
     private void button_signUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signUpActionPerformed
         // TODO add your handling code here:
         Screen_Dashboard dashboard = new Screen_Dashboard();
         dashboard.setVisible(true);
         dispose();
     }//GEN-LAST:event_button_signUpActionPerformed
-
-    private void field_cardNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_cardNumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_cardNumActionPerformed
-
-    private void field_exDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_exDateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_exDateActionPerformed
-
-    private void field_accNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_accNumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_accNumActionPerformed
-
-    private void field_PINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_PINActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_PINActionPerformed
 
     private void button_signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signInActionPerformed
         // TODO add your handling code here:

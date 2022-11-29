@@ -291,6 +291,11 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         button_withDraw.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         button_withDraw.setBorderPainted(false);
         button_withDraw.setPreferredSize(new java.awt.Dimension(64, 64));
+        button_withDraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_withDrawActionPerformed(evt);
+            }
+        });
 
         label_withDraw.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         label_withDraw.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -362,6 +367,10 @@ public class Screen_Dashboard extends javax.swing.JFrame {
     private void button_topUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_topUpActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_button_topUpActionPerformed
+
+    private void button_withDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_withDrawActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_button_withDrawActionPerformed
 
     /**
      * @param args the command line arguments

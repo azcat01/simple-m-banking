@@ -4,9 +4,6 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Simple M-Banking"/>
-    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[840, 480]"/>
-    </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[840, 480]"/>
     </Property>
@@ -173,9 +170,6 @@
                   <Dimension value="[230, 30]"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="field_cardNumActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="label_PIN">
               <Properties>
@@ -205,9 +199,6 @@
                   <Dimension value="[230, 30]"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="field_PINActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

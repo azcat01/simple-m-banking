@@ -44,7 +44,6 @@ public class Screen_SignIn extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simple M-Banking");
-        setMaximumSize(new java.awt.Dimension(840, 480));
         setMinimumSize(new java.awt.Dimension(840, 480));
         setResizable(false);
 
@@ -53,7 +52,7 @@ public class Screen_SignIn extends javax.swing.JFrame {
         panel_design.setPreferredSize(new java.awt.Dimension(510, 480));
         panel_design.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 60));
 
-        icon_mBanking.setIcon(new javax.swing.ImageIcon(getClass().getResource("../icons/icon_ewallet.png/"))); // NOI18N
+        icon_mBanking.setIcon(new javax.swing.ImageIcon(getClass().getResource("../icons/icon_ewallet.png"))); // NOI18N
         panel_design.add(icon_mBanking);
 
         getContentPane().add(panel_design, java.awt.BorderLayout.CENTER);
@@ -82,11 +81,6 @@ public class Screen_SignIn extends javax.swing.JFrame {
         label_cardNum.setText("Card Number");
 
         field_cardNum.setPreferredSize(new java.awt.Dimension(230, 30));
-        field_cardNum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                field_cardNumActionPerformed(evt);
-            }
-        });
 
         label_PIN.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         label_PIN.setForeground(new java.awt.Color(255, 255, 255));
@@ -101,11 +95,6 @@ public class Screen_SignIn extends javax.swing.JFrame {
         });
 
         field_PIN.setPreferredSize(new java.awt.Dimension(230, 30));
-        field_PIN.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                field_PINActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout panel_inputLayout = new javax.swing.GroupLayout(panel_input);
         panel_input.setLayout(panel_inputLayout);
@@ -167,10 +156,6 @@ public class Screen_SignIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void field_cardNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_cardNumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_cardNumActionPerformed
-
     private void button_signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signInActionPerformed
         // TODO add your handling code here:
         Screen_Dashboard dashboard = new Screen_Dashboard();
@@ -184,10 +169,6 @@ public class Screen_SignIn extends javax.swing.JFrame {
         signup.setVisible(true);
         dispose();
     }//GEN-LAST:event_button_signupActionPerformed
-
-    private void field_PINActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_field_PINActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_field_PINActionPerformed
 
     /**
      * @param args the command line arguments
