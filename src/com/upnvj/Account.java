@@ -51,6 +51,10 @@ public class Account implements Serializable {
     return idAccount;
   }
 
+  public int getAccountNumber() {
+    return accountNumber;
+  }
+
   public void addBalance(int balance) {
     this.balance += balance;
   }
