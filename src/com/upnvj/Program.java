@@ -114,7 +114,6 @@ class Main {
 public class Program {
   private ArrayList<Account> listAccount = new ArrayList<>();
   private Account account;
-  private Window window;
   private String OTP;
 
   public Account getAccount() {
@@ -204,7 +203,7 @@ public class Program {
 
   public void logout() {
     this.account = null;
-    // return false;
+    // return true;
   }
 
   @SuppressWarnings("unchecked") 
