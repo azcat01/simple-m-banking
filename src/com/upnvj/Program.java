@@ -176,6 +176,42 @@ public class Program {
   }
 
   @SuppressWarnings("unchecked")
+  public void transferMoney(int credit, int accountNumber){
+    try{
+      Boolean isAccountExist = false;
+      Account partner = null;
+      ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
+      listAccount = (ArrayList<Account>) objectIn.readObject();
+      objectIn.close();
+      
+      for (Account existingAcc : listAccount) {
+        if (existingAcc.getCardNumber() == accountNumber ) {
+          isAccountExist = true;
+          partner = existingAcc;
+          break;
+          }
+        }
+      
+      if(isAccountExist){
+        if(credit >= 10000 && credit <= this.account.getBalance()){
+          System.out.println("Transfer dana berhasil!");
+          this.account.substractBalance(credit);
+          partner.addBalance(credit);
+        }else {
+          System.out.println("Saldo anda tidak mencukupi atau nominal salah!");
+        }
+      }else{
+        System.out.println("Nomor rekening tujuan tidak ada!");
+    }
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+}
+
+  public Boolean  verifyAccount(long cardNumber, int pin) {
+    
+    return true;}
+  @SuppressWarnings("unchecked")
   public void login(long cardNumber, int pin) {
     try {
       ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
