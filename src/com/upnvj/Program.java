@@ -194,7 +194,7 @@ public class Program {
         }
       
       if(isAccountExist){
-        if(credit >= 10000 && credit <= this.account.getBalance()){
+        if(credit >= 10000 && credit <= account.getBalance()){
           System.out.println("Transfer dana berhasil!");
           this.account.substractBalance(credit);
           partner.addBalance(credit);
@@ -208,6 +208,20 @@ public class Program {
       System.out.println(e);
     }
 }
+
+  public String topupEmoney(int credit, int noTelp){
+    String response = "";
+
+    if(credit < 10000){
+      response = "Minimal Top Up untuk e-wallet adalah 10.000!";
+    }else if(credit > account.getBalance()){
+      response = "Saldo anda tidak cukup untuk melakukan transaksi";
+    }else if(credit > 10000 && credit <= account.getBalance()){
+      response = "Transaksi berhasil!";
+      account.substractBalance(credit);
+    }
+    return response;
+  }
 
   public Boolean  verifyAccount(long cardNumber, int pin) {
     
