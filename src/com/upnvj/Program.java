@@ -98,17 +98,14 @@ class VerifyCard {
 class Main {
   public static void main(String[] args) {
     long num = 341241351673932L;
-    long num2 = 341241351673931L;
-    long num3 = 341241351673930L;
-    System.out.println(num);
-    System.out.println(VerifyCard.checkCard(num));
-    System.out.println(VerifyCard.getCardType(num));
+    long num2 = 4485703204713403L;
+    long num3 = 5472158029631581L;
 
     Program p = new Program();
     // p.createAccount(num, "01/22", 321321, "Indonesia", "Irsyad");
     // p.createAccount(num2, "01/24", 123123, "Indonesia", "Daffa");
     // p.createAccount(num3, "01/23", 213123, "Indonesia", "Siddi");
-    p.login();
+    p.login(num3, 213213);
     // Account acc = p.getAccount();
     // System.out.println(acc.getName());
   }
@@ -146,7 +143,7 @@ public class Program {
       account.addBalance(credit);
       OTP = generateOTP();
       response = "Permintaan Setor Tunai Berhasil!";
-    } else if (multiples != 0){
+    } else if (multiples != 0) {
       response = "Masukkan Jumlah kelipatan 50.000 Rupiah!";
     } else {
       response = "Masukkan nominal rupiah dengan angka!";
@@ -179,62 +176,79 @@ public class Program {
   
   }
 
-  public Boolean  verifyAccount(long cardNumber, int pin) {
-    
-    return true;
+  @SuppressWarnings("unchecked")
+  public void login(long cardNumber, int pin) {
+    try {
+      ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
+      listAccount = (ArrayList<Account>) objectIn.readObject();
+      objectIn.close();
+
+      for (Account existingAcc : listAccount) {
+        if (existingAcc.getCardNumber() == cardNumber && existingAcc.getPin() == pin) {
+          this.account = existingAcc;
+          System.out.println("Success!");
+          return;
+          // return true;
+        }
+      }
+      
+      System.out.println("Wrong Number or Pin!");
+      return;
+      // return false;
+
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+    // return false;
+  }
+
+  public void logout() {
+    this.account = null;
+    // return false;
   }
 
   @SuppressWarnings("unchecked") 
   public void createAccount(long cardNumber, String expDate, int pin, String country, String name) {
     try {
-
-      File f = new File("dataAccount.ser");
-      Boolean isCardNumExist = false;
-
-      if (f.exists()) {
-        ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
-        listAccount = (ArrayList<Account>) objectIn.readObject();
-        objectIn.close();
-        
-        for (Account existingAcc : listAccount) {
-          if (existingAcc.getCardNumber() == cardNumber) {
-            isCardNumExist = true;
-            break;
+      if(VerifyCard.checkCard(cardNumber)) {
+        File f = new File("dataAccount.ser");
+        Boolean isCardNumExist = false;
+  
+        if (f.exists()) {
+          ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
+          listAccount = (ArrayList<Account>) objectIn.readObject();
+          objectIn.close();
+          
+          for (Account existingAcc : listAccount) {
+            if (existingAcc.getCardNumber() == cardNumber) {
+              isCardNumExist = true;
+              break;
+            }
           }
         }
-      }
+  
+        if (isCardNumExist) {
+          System.out.println("Failed Exist!");
+          return;
+        }
+  
+        Account acc = new Account(cardNumber, expDate, pin, country, name);
+        listAccount.add(acc);
+        this.account = acc;
+  
+        ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataAccount.ser"));
+        objectOut.writeObject(listAccount);
+        objectOut.flush();
+        objectOut.close();
+        System.out.println("Success");
 
-      if (isCardNumExist) {
+      } else {
+        System.out.println("Failed Invalid Number!");
         return;
       }
 
-      Account acc = new Account(cardNumber, expDate, pin, country, name);
-      listAccount.add(acc);
-      this.account = acc;
-
-      ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataAccount.ser"));
-      objectOut.writeObject(listAccount);
-      objectOut.flush();
-      objectOut.close();
-
     } catch (Exception e) {
       System.out.println(e);
     }
   }
-
-  @SuppressWarnings("unchecked")
-  public void login() {
-    try {
-      ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
-      this.listAccount = (ArrayList<Account>) objectIn.readObject();
-      this.account = listAccount.get(1);
-      System.out.println(account.getName());
-      System.out.println(listAccount);
-
-      objectIn.close();
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-  }
-
 }

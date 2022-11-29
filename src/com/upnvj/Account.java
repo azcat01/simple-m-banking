@@ -3,15 +3,18 @@ package com.upnvj;
 import java.io.Serializable;
 
 public class Account implements Serializable {
+  private static int idGenerate = 1;
+  private int idAccount;
+  private int balance;
+  private int pin;
+  private int accountNumber;
   private String name;
   private String country;
   private String expDate;
   private long cardNumber;
-  private int balance;
-  private int pin;
-  private static int idAccount;
 
   public Account(long cardNumber, String expDate, int pin, String country, String name) {
+    this.idAccount = idGenerate++;
     this.balance = 100_000;
     this.cardNumber = cardNumber;
     this.expDate = expDate;
@@ -42,6 +45,10 @@ public class Account implements Serializable {
 
   public String getExpDate() {
     return expDate;
+  }
+
+  public int getIdAccount() {
+    return idAccount;
   }
 
   public void addBalance(int balance) {
