@@ -102,32 +102,32 @@ class Main {
     long num3 = 5472158029631581L;
 
     Program p = new Program();
-    // p.createAccount(num, "01/22", 321321, "Indonesia", "Irsyad");
-    // p.createAccount(num2, "01/24", 123123, "Indonesia", "Daffa");
-    // p.createAccount(num3, "01/23", 213123, "Indonesia", "Siddi");
-    p.login(num3, 213213);
+    // p.createAccount(num, "01/22", 321321, 124534, "Irsyad");
+    // p.createAccount(num2, "01/24", 123123, 5394281, "Daffa");
+    // p.createAccount(num3, "01/23", 213123, 2495301, "Siddi");
+    // p.login(num3, 213123);
+    // p.withdrawMoney(50000);
+
     // Account acc = p.getAccount();
+    // ArrayList<Transaction> listTr = acc.getListTransaction();
+    // System.out.println(acc.getListTransaction());
     // System.out.println(acc.getName());
+
+    // for (Transaction tr : listTr) {
+    //   System.out.println(tr.getAccount().getName());
+    //   System.out.println(tr.getCredit());
+    //   System.out.println(tr.getTransactionType());
+    // }
   }
 }
 
 public class Program {
   private ArrayList<Account> listAccount = new ArrayList<>();
+  private ArrayList<Transaction> listTransaction = new ArrayList<>();
   private Account account;
-  private String OTP;
 
   public Account getAccount() {
     return account;
-  }
-
-  public String getOTP() {
-    return OTP;
-  }
-  
-  public String generateOTP() {
-    Random otp = new Random();
-    Integer code = 1000 + otp.nextInt(8999);
-    return code.toString();
   }
 
   public String saveMoney(int credit) {
@@ -140,7 +140,7 @@ public class Program {
       response = "Minimum setoran tunai : 50.000 Rupiah";
     } else if (multiples == 0) {
       account.addBalance(credit);
-      OTP = generateOTP();
+      createTransaction(credit, "Deposit");
       response = "Permintaan Setor Tunai Berhasil!";
     } else if (multiples != 0) {
       response = "Masukkan Jumlah kelipatan 50.000 Rupiah!";
@@ -162,8 +162,8 @@ public class Program {
     } else if (account.getBalance() < 50000){
       response = "Uang Anda Kurang dari 50.000 Rupiah Untuk Melakukan Withdraw";
     } else if (account.getBalance() >= 50000 && multiples == 0) {
-      account.substractBalance(credit);;
-      OTP = generateOTP();
+      account.substractBalance(credit);
+      createTransaction(credit, "Withdraw");
       response = "Tarik Tunai Berhasil!";
     } else if (multiples != 0) {
       response = "Masukkan jumlah kelipatan 50.000 Rupiah!";
@@ -176,10 +176,11 @@ public class Program {
   }
 
   @SuppressWarnings("unchecked")
-  public void transferMoney(int credit, int accountNumber){
-    try{
+  public void transferMoney(int credit, int accountNumber) {
+    try {
       Boolean isAccountExist = false;
       Account partner = null;
+
       ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
       listAccount = (ArrayList<Account>) objectIn.readObject();
       objectIn.close();
@@ -189,24 +190,39 @@ public class Program {
           isAccountExist = true;
           partner = existingAcc;
           break;
-          }
         }
+      }
       
       if(isAccountExist){
-        if(credit >= 10000 && credit <= this.account.getBalance()){
+        if(credit >= 10000 && credit <= account.getBalance()){
           System.out.println("Transfer dana berhasil!");
           this.account.substractBalance(credit);
           partner.addBalance(credit);
-        }else {
+          createTransaction(credit, "Transfer");
+        } else {
           System.out.println("Saldo anda tidak mencukupi atau nominal salah!");
         }
-      }else{
+      } else {
         System.out.println("Nomor rekening tujuan tidak ada!");
-    }
+      }
     } catch (Exception e) {
       System.out.println(e);
     }
-}
+  }
+
+  public String topupEmoney(int credit, int noTelp){
+    String response = "";
+
+    if(credit < 10000){
+      response = "Minimal Top Up untuk e-wallet adalah 10.000!";
+    }else if(credit > account.getBalance()){
+      response = "Saldo anda tidak cukup untuk melakukan transaksi";
+    }else if(credit > 10000 && credit <= account.getBalance()){
+      response = "Transaksi berhasil!";
+      account.substractBalance(credit);
+    }
+    return response;
+  }
 
   public Boolean  verifyAccount(long cardNumber, int pin) {
     
@@ -243,7 +259,7 @@ public class Program {
   }
 
   @SuppressWarnings("unchecked") 
-  public void createAccount(long cardNumber, String expDate, int pin, String country, String name) {
+  public void createAccount(long cardNumber, String expDate, int pin, int accountNumber, String name) {
     try {
       if(VerifyCard.checkCard(cardNumber)) {
         File f = new File("dataAccount.ser");
@@ -267,7 +283,7 @@ public class Program {
           return;
         }
   
-        Account acc = new Account(cardNumber, expDate, pin, country, name);
+        Account acc = new Account(cardNumber, expDate, pin, accountNumber, name);
         listAccount.add(acc);
         this.account = acc;
   
@@ -281,6 +297,30 @@ public class Program {
         System.out.println("Failed Invalid Number!");
         return;
       }
+
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void createTransaction(int credit, String transactionType) {
+    try {
+      File f = new File("dataTransaction.ser");
+      
+      if (f.exists()) {
+        ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataTransaction.ser"));
+        listTransaction = (ArrayList<Transaction>) objectIn.readObject();
+        objectIn.close();
+
+      }
+
+      Transaction transaction = new Transaction(this.account, transactionType, credit);    
+      listTransaction.add(transaction);
+      ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataTransaction.ser"));
+      objectOut.writeObject(listTransaction);
+      objectOut.flush();
+      objectOut.close();
 
     } catch (Exception e) {
       System.out.println(e);
