@@ -9,7 +9,7 @@ public class Transaction implements Serializable {
   private static int idGenerator = 1;
   private int idTransaction;
   private int credit;
-  private String OTP = getOTP();
+  private String OTP = generateOTP();
   private Account account;
   private String transactionType;
   private LocalDateTime date = LocalDateTime.now();
@@ -22,7 +22,7 @@ public class Transaction implements Serializable {
   }
 
   public String getDate() {
-    DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     String formattedDate = date.format(formatObj);
     return formattedDate;
   }

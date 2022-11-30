@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.NumberFormat;
 import java.util.*;
 
 class VerifyCard {
@@ -97,28 +98,45 @@ class VerifyCard {
 
 class Main {
   public static void main(String[] args) {
-    long num = 341241351673932L;
+    long num = Long.parseLong("341241351673932");
     long num2 = 4485703204713403L;
     long num3 = 5472158029631581L;
 
     Program p = new Program();
+    // System.out.println(p.formatBalance(1000000));
+    // System.out.println(VerifyCard.getCardType(num));
     // p.createAccount(num, "01/22", 321321, 124534, "Irsyad");
     // p.createAccount(num2, "01/24", 123123, 5394281, "Daffa");
     // p.createAccount(num3, "01/23", 213123, 2495301, "Siddi");
     p.login(num, 321321);
+    // p.login(num2, 1231231);
+    // p.login(num3, 213123);
     // p.topupEmoney(50000, "085695403201");
+    // System.out.println(p.transferMoney(50000, 5394281));
+    // p.saveMoney(50000);
     // p.saveMoney(50000);
     // p.withdrawMoney(50000);
 
     Account acc = p.getAccount();
+    // System.out.println(acc.getBalance());
     ArrayList<Transaction> listTr = acc.getListTransaction();
-    System.out.println(acc.getListTransaction());
+    ArrayList<Account> listacc = p.getListAccount() ;
+    ArrayList<Object> listObj = p.getRowTable() ;
+    // System.out.println(p.getTransactionOTP());
 
-    for (Transaction tr : listTr) {
-      System.out.println(tr.getAccount().getName());
-      System.out.println(tr.getCredit());
-      System.out.println(tr.getTransactionType());
+    for (Object a : listObj) {
+      System.out.println(a);
     }
+
+    // for (Account a : listacc) {
+    //   System.out.println(a.getName());
+    //   System.out.println(a.getBalance());
+    // }
+    
+    // for (Transaction tr : listTr) {
+    //   System.out.println(tr.getAccount().getBalance());
+    //   System.out.println(tr.getAccount().getName());
+    // }
   }
 }
 
@@ -131,6 +149,32 @@ public class Program {
     return account;
   }
 
+  public String formatBalance(int number) {
+    NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
+    String s = format.format(number) + ",-";
+    return s;
+  }
+
+  public String getTransactionOTP() {
+    ArrayList<Transaction> tr = account.getListTransaction();
+    return tr.get(tr.size() - 1).getOTP();
+  }
+
+  public ArrayList<Account> getListAccount() {
+    return listAccount;
+  }
+
+  public ArrayList<Object> getRowTable() {
+    ArrayList<Object> objList = new ArrayList<>();
+    ArrayList<Transaction> tr = account.getListTransaction();
+    Collections.reverse(tr);
+    for (Transaction t : tr) {
+      objList.add(new Object[] {t.getDate(), t.getTransactionType(), Integer.toString(t.getCredit())});
+    }
+
+    return objList;
+  }
+
   public int saveMoney(int credit) {
     int multiples = credit % 50000;
     int response = 5;
@@ -140,7 +184,7 @@ public class Program {
     } else if (multiples == 0) {
       account.addBalance(credit);
       createTransaction(credit, "Deposit");
-      response = 0; // Success
+      updateBalance();
     } else if (multiples != 0) {
       response = 2; // Wrong multiples
     } else {
@@ -161,6 +205,7 @@ public class Program {
     } else if (account.getBalance() >= 50000 && multiples == 0) {
       account.substractBalance(credit);
       createTransaction(credit, "Withdraw");
+      updateBalance();
       response = 0; // Success
     } else if (multiples != 0) {
       response = 2; // Wrong multiples
@@ -173,7 +218,7 @@ public class Program {
   }
 
   @SuppressWarnings("unchecked")
-  public int transferMoney(int credit, int accountNumber) {
+  public int transferMoney(int credit, long accountNumber) {
     try {
       Boolean isAccountExist = false;
       Account partner = null;
@@ -183,7 +228,7 @@ public class Program {
       objectIn.close();
       
       for (Account existingAcc : listAccount) {
-        if (existingAcc.getCardNumber() == accountNumber ) {
+        if (existingAcc.getAccountNumber() == accountNumber ) {
           isAccountExist = true;
           partner = existingAcc;
           break;
@@ -193,9 +238,11 @@ public class Program {
       if(isAccountExist){
         if(credit >= 10000 && credit <= account.getBalance()) {
           System.out.println("Transfer dana berhasil!");
-          this.account.substractBalance(credit);
+          account.substractBalance(credit);
           partner.addBalance(credit);
           createTransaction(credit, "Transfer");
+          listAccount.set(account.getIdAccount() - 1, this.account);
+          updateBalance();
           return 0; // Success
         } else {
           System.out.println("Saldo anda tidak mencukupi atau nominal salah!");
@@ -219,6 +266,8 @@ public class Program {
     } else if (credit > 10000 && credit <= account.getBalance()) {
       account.substractBalance(credit);
       createTransaction(credit, "Topup");
+      listAccount.set(account.getIdAccount() - 1, this.account);
+      updateBalance();
       response = 0;
     } else {
       response = 5;
@@ -327,5 +376,17 @@ public class Program {
       System.out.println(e);
     }
 
+  }
+
+  public void updateBalance() {
+    try {
+      ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataAccount.ser"));
+      objectOut.writeObject(listAccount);
+      objectOut.flush();
+      objectOut.close();
+
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
 }

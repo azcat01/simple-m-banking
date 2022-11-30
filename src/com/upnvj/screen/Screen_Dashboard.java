@@ -4,7 +4,12 @@
  */
 package com.upnvj.screen;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import com.upnvj.Program;
 /**
  *
  * @author DAPIT
@@ -16,13 +21,28 @@ public class Screen_Dashboard extends javax.swing.JFrame {
      */
     public Screen_Dashboard() {
         initComponents();
+        test();
     }
     
+    Program p;
     public String fullName = "Muhammad Daffa Nurrizqi";
     public String cardNum = "2290 7856 9034 6789";
     public String exDate = "11/22";
     public String cardType = "VISA";
     public int cardBalance = 10000;
+
+    public void test() {
+        Program p = new Program();
+        p.login(Long.parseLong("341241351673932"), 321321);
+    }
+
+    public void setTableValue() {
+        
+        ArrayList<Object> listObj = p.getRowTable() ;
+        for (Object a : listObj) {
+            
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,17 +141,11 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         table_transHistory.setBackground(new java.awt.Color(109, 152, 134));
         table_transHistory.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         table_transHistory.setForeground(new java.awt.Color(255, 255, 255));
-        table_transHistory.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Date", "Type", "Balance"
-            }
-        ));
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.setColumnIdentifiers(new Object[] {
+            "Date", "Type", "Balance"
+        });
+        table_transHistory.setModel(tableModel);
         table_transHistory.setPreferredSize(new java.awt.Dimension(227, 80));
         sp_transHistory.setViewportView(table_transHistory);
 
