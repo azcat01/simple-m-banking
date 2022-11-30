@@ -18,7 +18,7 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         initComponents();
     }
     
-    public String fullName = "Daffa Nurrizqi";
+    public String fullName = "Muhammad Daffa Nurrizqi";
     public String cardNum = "2290 7856 9034 6789";
     public String exDate = "11/22";
     public String cardType = "VISA";
@@ -56,6 +56,10 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         label_topUp = new javax.swing.JLabel();
         button_withDraw = new javax.swing.JButton();
         label_withDraw = new javax.swing.JLabel();
+        button_transfer = new javax.swing.JButton();
+        label_transfer = new javax.swing.JLabel();
+        button_emoney = new javax.swing.JButton();
+        label_emoney = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simple M-Banking");
@@ -87,16 +91,17 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         label_fullName.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         label_fullName.setForeground(new java.awt.Color(247, 247, 247));
         label_fullName.setText(fullName);
+        label_fullName.setPreferredSize(new java.awt.Dimension(90, 22));
 
         javax.swing.GroupLayout panel_accountLayout = new javax.swing.GroupLayout(panel_account);
         panel_account.setLayout(panel_accountLayout);
         panel_accountLayout.setHorizontalGroup(
             panel_accountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_accountLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(24, 24, 24)
                 .addComponent(label_iconUser, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(label_fullName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(label_fullName, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_accountLayout.setVerticalGroup(
@@ -104,9 +109,9 @@ public class Screen_Dashboard extends javax.swing.JFrame {
             .addGroup(panel_accountLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panel_accountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(label_fullName)
+                    .addComponent(label_fullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(label_iconUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panel_transHistory.setBackground(new java.awt.Color(57, 62, 70));
@@ -127,6 +132,7 @@ public class Screen_Dashboard extends javax.swing.JFrame {
                 "Date", "Type", "Balance"
             }
         ));
+        table_transHistory.setPreferredSize(new java.awt.Dimension(227, 80));
         sp_transHistory.setViewportView(table_transHistory);
 
         javax.swing.GroupLayout panel_transHistoryLayout = new javax.swing.GroupLayout(panel_transHistory);
@@ -134,8 +140,8 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         panel_transHistoryLayout.setHorizontalGroup(
             panel_transHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_transHistoryLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(sp_transHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(sp_transHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_transHistoryLayout.setVerticalGroup(
@@ -228,7 +234,7 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         label_cardBalance.setText("Rp" + cardBalance + ",-");
         label_cardBalance.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        label_cardType.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
+        label_cardType.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
         label_cardType.setForeground(new java.awt.Color(247, 247, 247));
         label_cardType.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         label_cardType.setText(cardType);
@@ -247,12 +253,12 @@ public class Screen_Dashboard extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_creditCardLayout.createSequentialGroup()
                         .addGroup(panel_creditCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panel_creditCardLayout.createSequentialGroup()
-                                .addComponent(label_cardBalance)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
+                                .addComponent(label_cardBalance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(label_cardType))
                             .addGroup(panel_creditCardLayout.createSequentialGroup()
                                 .addComponent(label_cardNum)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                                 .addComponent(label_exDate)))
                         .addGap(26, 26, 26))))
         );
@@ -302,34 +308,81 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         label_withDraw.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label_withDraw.setText("Withdraw");
 
+        button_transfer.setBackground(new java.awt.Color(57, 62, 70));
+        button_transfer.setIcon(new javax.swing.ImageIcon(getClass().getResource("../icons/icon_transfer.png"))); // NOI18N
+        button_transfer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        button_transfer.setBorderPainted(false);
+        button_transfer.setPreferredSize(new java.awt.Dimension(64, 64));
+        button_transfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_transferActionPerformed(evt);
+            }
+        });
+
+        label_transfer.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        label_transfer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label_transfer.setText("Transfer");
+
+        button_emoney.setBackground(new java.awt.Color(57, 62, 70));
+        button_emoney.setIcon(new javax.swing.ImageIcon(getClass().getResource("../icons/icon_emoney.png"))); // NOI18N
+        button_emoney.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        button_emoney.setBorderPainted(false);
+        button_emoney.setPreferredSize(new java.awt.Dimension(64, 64));
+        button_emoney.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_emoneyActionPerformed(evt);
+            }
+        });
+
+        label_emoney.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        label_emoney.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label_emoney.setText("E-Money");
+
         javax.swing.GroupLayout panel_buttonFeatureLayout = new javax.swing.GroupLayout(panel_buttonFeature);
         panel_buttonFeature.setLayout(panel_buttonFeatureLayout);
         panel_buttonFeatureLayout.setHorizontalGroup(
             panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_buttonFeatureLayout.createSequentialGroup()
-                .addGap(150, 150, 150)
+                .addGap(92, 92, 92)
                 .addGroup(panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(label_topUp)
                     .addComponent(button_topUp))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addGroup(panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(label_transfer)
+                    .addComponent(button_transfer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(50, 50, 50)
                 .addGroup(panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(label_withDraw)
                     .addComponent(button_withDraw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(150, 150, 150))
+                .addGap(50, 50, 50)
+                .addGroup(panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(label_emoney)
+                    .addComponent(button_emoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(92, 92, 92))
         );
         panel_buttonFeatureLayout.setVerticalGroup(
             panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_buttonFeatureLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panel_buttonFeatureLayout.createSequentialGroup()
-                        .addComponent(button_withDraw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(button_emoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(label_withDraw))
-                    .addGroup(panel_buttonFeatureLayout.createSequentialGroup()
-                        .addComponent(button_topUp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(label_topUp)))
+                        .addComponent(label_emoney))
+                    .addGroup(panel_buttonFeatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panel_buttonFeatureLayout.createSequentialGroup()
+                            .addComponent(button_transfer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(label_transfer))
+                        .addGroup(panel_buttonFeatureLayout.createSequentialGroup()
+                            .addComponent(button_withDraw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(label_withDraw))
+                        .addGroup(panel_buttonFeatureLayout.createSequentialGroup()
+                            .addComponent(button_topUp)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(label_topUp))))
                 .addContainerGap())
         );
 
@@ -339,9 +392,9 @@ public class Screen_Dashboard extends javax.swing.JFrame {
             panel_mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panel_buttonFeature, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panel_mainPanelLayout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(62, 62, 62)
                 .addComponent(panel_creditCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         panel_mainPanelLayout.setVerticalGroup(
             panel_mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,6 +434,14 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_button_withDrawActionPerformed
 
+    private void button_transferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_transferActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_button_transferActionPerformed
+
+    private void button_emoneyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_emoneyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_button_emoneyActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -417,8 +478,10 @@ public class Screen_Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton button_emoney;
     private javax.swing.JButton button_signOut;
     private javax.swing.JButton button_topUp;
+    private javax.swing.JButton button_transfer;
     private javax.swing.JButton button_withDraw;
     private javax.swing.JLabel label_balanceHeader;
     private javax.swing.JLabel label_cardBalance;
@@ -430,6 +493,8 @@ public class Screen_Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel label_title;
     private javax.swing.JLabel label_topUp;
     private javax.swing.JLabel label_withDraw;
+    private javax.swing.JLabel label_transfer;
+    private javax.swing.JLabel label_emoney;
     private javax.swing.JPanel panel_account;
     private javax.swing.JPanel panel_buttonFeature;
     private javax.swing.JPanel panel_creditCard;
