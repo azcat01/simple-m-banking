@@ -1,7 +1,6 @@
 package com.upnvj.screen;
 
 import javax.swing.UIManager;
-
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class Main {
