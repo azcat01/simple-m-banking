@@ -5,6 +5,8 @@
 package com.upnvj.screen;
 
 import javax.swing.JOptionPane;
+import com.upnvj.Program;
+
 /**
  *
  * @author DAPIT
@@ -14,6 +16,8 @@ public class Screen_SignIn extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+
+    Program program;
     public Screen_SignIn() {
         initComponents();
     }
@@ -158,15 +162,45 @@ public class Screen_SignIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signInActionPerformed
-        // TODO add your handling code here:
-        System.out.println(field_cardNum.getText() + " " + field_PIN.getText());
-        Screen_Dashboard dashboard = new Screen_Dashboard();
-        dashboard.setVisible(true);
-        dispose();
+        try {
+            this.program = new Program();
+            // long cardNum = Long.parseLong(field_cardNum.getText()) ;
+            // int pin = Integer.parseInt(new String (field_PIN.getPassword()));
+            long cardNum = 341241351673932L;
+            int pin = 321321;
+            int code = program.login(cardNum, pin);
+            // System.out.println(program.getAccount());
+
+            switch (code) {
+                case 0:
+                    Screen_Dashboard dashboard = new Screen_Dashboard();
+                    dashboard.getDetails(program);
+                    dashboard.setValue();
+                    dashboard.setVisible(true);
+                    dispose();
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(rootPane, 
+                        "The card number or PIN you're trying to enter is incorrect!", 
+                        "", 2);
+                    break;
+                case 2:
+                    JOptionPane.showMessageDialog(rootPane, 
+                        "Unexpected error", 
+                        "", 2);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, 
+                "You need to enter all of the field in order to sign in!", 
+                "", 2);
+        }        
     }//GEN-LAST:event_button_signInActionPerformed
 
     private void button_signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signupActionPerformed
-        // TODO add your handling code here:
         Screen_SignUp signup = new Screen_SignUp();
         signup.setVisible(true);
         dispose();

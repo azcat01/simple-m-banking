@@ -102,23 +102,33 @@ class Main {
     long num3 = 5472158029631581L;
 
     Program p = new Program();
+    // System.out.println(VerifyCard.getCardType(num));
     // p.createAccount(num, "01/22", 321321, 124534, "Irsyad");
     // p.createAccount(num2, "01/24", 123123, 5394281, "Daffa");
     // p.createAccount(num3, "01/23", 213123, 2495301, "Siddi");
     p.login(num, 321321);
     // p.topupEmoney(50000, "085695403201");
     // p.saveMoney(50000);
+    // p.saveMoney(50000);
     // p.withdrawMoney(50000);
 
     Account acc = p.getAccount();
-    ArrayList<Transaction> listTr = acc.getListTransaction();
-    System.out.println(acc.getListTransaction());
+    // System.out.println(acc.getBalance());
+    // ArrayList<Transaction> listTr = acc.getListTransaction();
+    // System.out.println(acc.getListTransaction());
+    // System.out.println(p.getTransactionOTP());
 
-    for (Transaction tr : listTr) {
-      System.out.println(tr.getAccount().getName());
-      System.out.println(tr.getCredit());
-      System.out.println(tr.getTransactionType());
-    }
+    // for (Account a : listacc) {
+    //   System.out.println(a.getName());
+    //   System.out.println(a.getBalance());
+    // }
+
+    // for (Transaction tr : listTr) {
+    //   System.out.println(tr.getAccount().getName());
+    //   System.out.println(tr.getCredit());
+    //   System.out.println(tr.getTransactionType());
+    //   System.out.println(tr.getOTP());
+    // }
   }
 }
 
@@ -126,20 +136,53 @@ public class Program {
   private ArrayList<Account> listAccount = new ArrayList<>();
   private ArrayList<Transaction> listTransaction = new ArrayList<>();
   private Account account;
+  private Transaction latestTransaction;
 
   public Account getAccount() {
     return account;
   }
+
+  public String getCardType() {
+    return VerifyCard.getCardType(this.account.getCardNumber());
+  }
+
+  public String getTransactionOTP() {
+    return latestTransaction.getOTP();
+  }
+
+  public String getTransactionDate() {
+    return latestTransaction.getDate();
+  }
+
+  public String getTransactionId() {
+    return Integer.toString(latestTransaction.getIdTransaction());
+  }
+
+  public ArrayList<Object> getRowTable() {
+    ArrayList<Object> objList = new ArrayList<>();
+    ArrayList<Transaction> tr = account.getListTransaction();
+    Collections.reverse(tr);
+    for (Transaction t : tr) {
+      objList.add(new Object[] {t.getDate(), t.getTransactionType(), Integer.toString(t.getCredit())});
+    }
+
+    return objList;
+  }
+
+  //  public ArrayList<Account> getListAccount() {
+  //   return listAccount;
+  // }
 
   public int saveMoney(int credit) {
     int multiples = credit % 50000;
     int response = 5;
 
     if(credit > 10_000_000) {
-      response = 1; // Not enough credits
+      response = 1; // Over the limit
     } else if (multiples == 0) {
       account.addBalance(credit);
       createTransaction(credit, "Deposit");
+      updateBalance();
       response = 0; // Success
     } else if (multiples != 0) {
       response = 2; // Wrong multiples
@@ -155,12 +198,13 @@ public class Program {
     int response = 5;
 
     if(credit > 5_000_000){
-      response = 3; // Over the limit
+      response = 1; // Over the limit
     } else if (credit > account.getBalance()) {
-      response = 1; // Not enough credit
+      response = 3; // Not enough credit
     } else if (account.getBalance() >= 50000 && multiples == 0) {
       account.substractBalance(credit);
       createTransaction(credit, "Withdraw");
+      updateBalance();
       response = 0; // Success
     } else if (multiples != 0) {
       response = 2; // Wrong multiples
@@ -183,7 +227,7 @@ public class Program {
       objectIn.close();
       
       for (Account existingAcc : listAccount) {
-        if (existingAcc.getCardNumber() == accountNumber ) {
+        if (existingAcc.getAccountNumber() == accountNumber ) {
           isAccountExist = true;
           partner = existingAcc;
           break;
@@ -192,14 +236,13 @@ public class Program {
       
       if(isAccountExist){
         if(credit >= 10000 && credit <= account.getBalance()) {
-          System.out.println("Transfer dana berhasil!");
           this.account.substractBalance(credit);
           partner.addBalance(credit);
           createTransaction(credit, "Transfer");
+          updateBalance();
           return 0; // Success
         } else {
-          System.out.println("Saldo anda tidak mencukupi atau nominal salah!");
-          return 2; // Not enough credit
+          return 3; // Not enough credit
         }
       } 
     } catch (Exception e) {
@@ -219,9 +262,10 @@ public class Program {
     } else if (credit > 10000 && credit <= account.getBalance()) {
       account.substractBalance(credit);
       createTransaction(credit, "Topup");
-      response = 0;
+      updateBalance();
+      response = 0; // Success
     } else {
-      response = 5;
+      response = 5; // Unexpected error
     }
 
     return response;
@@ -249,16 +293,15 @@ public class Program {
       System.out.println(e);
     }
 
-    return 2;
+    return 2; // Unexpected error
   }
 
-  public int logout() {
+  public void logout() {
     this.account = null;
-    return 0;
   }
 
   @SuppressWarnings("unchecked") 
-  public int createAccount(long cardNumber, String expDate, int pin, int accountNumber, String name) {
+  public int createAccount(long cardNumber, String expDate, int pin, long accountNumber, String name) {
     try {
       if(VerifyCard.checkCard(cardNumber)) {
         File f = new File("dataAccount.ser");
@@ -313,10 +356,10 @@ public class Program {
         ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataTransaction.ser"));
         listTransaction = (ArrayList<Transaction>) objectIn.readObject();
         objectIn.close();
-
       }
 
       Transaction transaction = new Transaction(this.account, transactionType, credit);    
+      latestTransaction = transaction;
       listTransaction.add(transaction);
       ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataTransaction.ser"));
       objectOut.writeObject(listTransaction);
@@ -327,5 +370,17 @@ public class Program {
       System.out.println(e);
     }
 
+  }
+
+  public void updateBalance() {
+    try {
+      ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataAccount.ser"));
+      objectOut.writeObject(listAccount);
+      objectOut.flush();
+      objectOut.close();
+
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
 }
