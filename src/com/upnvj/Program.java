@@ -105,19 +105,20 @@ class Main {
     // p.createAccount(num, "01/22", 321321, 124534, "Irsyad");
     // p.createAccount(num2, "01/24", 123123, 5394281, "Daffa");
     // p.createAccount(num3, "01/23", 213123, 2495301, "Siddi");
-    // p.login(num3, 213123);
+    p.login(num, 321321);
+    // p.topupEmoney(50000, "085695403201");
+    // p.saveMoney(50000);
     // p.withdrawMoney(50000);
 
-    // Account acc = p.getAccount();
-    // ArrayList<Transaction> listTr = acc.getListTransaction();
-    // System.out.println(acc.getListTransaction());
-    // System.out.println(acc.getName());
+    Account acc = p.getAccount();
+    ArrayList<Transaction> listTr = acc.getListTransaction();
+    System.out.println(acc.getListTransaction());
 
-    // for (Transaction tr : listTr) {
-    //   System.out.println(tr.getAccount().getName());
-    //   System.out.println(tr.getCredit());
-    //   System.out.println(tr.getTransactionType());
-    // }
+    for (Transaction tr : listTr) {
+      System.out.println(tr.getAccount().getName());
+      System.out.println(tr.getCredit());
+      System.out.println(tr.getTransactionType());
+    }
   }
 }
 
@@ -210,23 +211,21 @@ public class Program {
     }
   }
 
-  public String topupEmoney(int credit, int noTelp){
+  public String topupEmoney(int credit, String noTelp){
     String response = "";
 
-    if(credit < 10000){
+    if (credit < 10000) {
       response = "Minimal Top Up untuk e-wallet adalah 10.000!";
-    }else if(credit > account.getBalance()){
+    } else if (credit > account.getBalance()) {
       response = "Saldo anda tidak cukup untuk melakukan transaksi";
-    }else if(credit > 10000 && credit <= account.getBalance()){
-      response = "Transaksi berhasil!";
+    } else if (credit > 10000 && credit <= account.getBalance()) {
+      response = String.format("Transaksi ke %s berhasil!", noTelp);
       account.substractBalance(credit);
+      createTransaction(credit, "Topup");
     }
     return response;
   }
 
-  public Boolean  verifyAccount(long cardNumber, int pin) {
-    
-    return true;}
   @SuppressWarnings("unchecked")
   public void login(long cardNumber, int pin) {
     try {
