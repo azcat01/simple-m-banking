@@ -131,45 +131,41 @@ public class Program {
     return account;
   }
 
-  public String saveMoney(int credit) {
+  public int saveMoney(int credit) {
     int multiples = credit % 50000;
-    String response = "";
+    int response = 5;
 
     if(credit > 10_000_000) {
-      response = "Anda melebihi maksimum setoran tunai! Maksimum : Rp5.000.000";
-    } else if (credit < 50000 ) {
-      response = "Minimum setoran tunai : 50.000 Rupiah";
+      response = 1; // Not enough credits
     } else if (multiples == 0) {
       account.addBalance(credit);
       createTransaction(credit, "Deposit");
-      response = "Permintaan Setor Tunai Berhasil!";
+      response = 0; // Success
     } else if (multiples != 0) {
-      response = "Masukkan Jumlah kelipatan 50.000 Rupiah!";
+      response = 2; // Wrong multiples
     } else {
-      response = "Masukkan nominal rupiah dengan angka!";
+      response = 5; // Invalid Input
     }
 
     return response;
   }
 
-  public String withdrawMoney(int credit) {
+  public int withdrawMoney(int credit) {
     int multiples = credit  % 50000;
-    String response = "";
+    int response = 5;
 
     if(credit > 5_000_000){
-      response = "Anda melebihi Maksimum Penarikan Uang! Maksimum : Rp5.000.000";
+      response = 3; // Over the limit
     } else if (credit > account.getBalance()) {
-      response = "Uang anda tidak cukup untuk withdraw dengan jumlah : "  + credit;
-    } else if (account.getBalance() < 50000){
-      response = "Uang Anda Kurang dari 50.000 Rupiah Untuk Melakukan Withdraw";
+      response = 1; // Not enough credit
     } else if (account.getBalance() >= 50000 && multiples == 0) {
       account.substractBalance(credit);
       createTransaction(credit, "Withdraw");
-      response = "Tarik Tunai Berhasil!";
+      response = 0; // Success
     } else if (multiples != 0) {
-      response = "Masukkan jumlah kelipatan 50.000 Rupiah!";
+      response = 2; // Wrong multiples
     } else {
-      response = "Masukkan nominal rupiah dengan angka!";
+      response = 5; // Invalid Input
     }
 
     return response;
@@ -177,7 +173,7 @@ public class Program {
   }
 
   @SuppressWarnings("unchecked")
-  public void transferMoney(int credit, int accountNumber) {
+  public int transferMoney(int credit, int accountNumber) {
     try {
       Boolean isAccountExist = false;
       Account partner = null;
@@ -195,39 +191,44 @@ public class Program {
       }
       
       if(isAccountExist){
-        if(credit >= 10000 && credit <= account.getBalance()){
+        if(credit >= 10000 && credit <= account.getBalance()) {
           System.out.println("Transfer dana berhasil!");
           this.account.substractBalance(credit);
           partner.addBalance(credit);
           createTransaction(credit, "Transfer");
+          return 0; // Success
         } else {
           System.out.println("Saldo anda tidak mencukupi atau nominal salah!");
+          return 2; // Not enough credit
         }
-      } else {
-        System.out.println("Nomor rekening tujuan tidak ada!");
-      }
+      } 
     } catch (Exception e) {
       System.out.println(e);
     }
+
+    return 6; // Destination account doesn't exist
   }
 
-  public String topupEmoney(int credit, String noTelp){
-    String response = "";
+  public int topupEmoney(int credit, String noTelp){
+    int response = 5;
 
     if (credit < 10000) {
-      response = "Minimal Top Up untuk e-wallet adalah 10.000!";
+      response = 2; // Minimal credit is 10000
     } else if (credit > account.getBalance()) {
-      response = "Saldo anda tidak cukup untuk melakukan transaksi";
+      response = 1; // Not enough credit
     } else if (credit > 10000 && credit <= account.getBalance()) {
-      response = String.format("Transaksi ke %s berhasil!", noTelp);
       account.substractBalance(credit);
       createTransaction(credit, "Topup");
+      response = 0;
+    } else {
+      response = 5;
     }
+
     return response;
   }
 
   @SuppressWarnings("unchecked")
-  public void login(long cardNumber, int pin) {
+  public int login(long cardNumber, int pin) {
     try {
       ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
       listAccount = (ArrayList<Account>) objectIn.readObject();
@@ -237,28 +238,27 @@ public class Program {
         if (existingAcc.getCardNumber() == cardNumber && existingAcc.getPin() == pin) {
           this.account = existingAcc;
           System.out.println("Success!");
-          return;
-          // return true;
+          return 0; // Success
         }
       }
       
       System.out.println("Wrong Number or Pin!");
-      return;
-      // return false;
+      return 1; // Wrong number or pin
 
     } catch (Exception e) {
       System.out.println(e);
     }
-    // return false;
+
+    return 2;
   }
 
-  public void logout() {
+  public int logout() {
     this.account = null;
-    // return true;
+    return 0;
   }
 
   @SuppressWarnings("unchecked") 
-  public void createAccount(long cardNumber, String expDate, int pin, int accountNumber, String name) {
+  public int createAccount(long cardNumber, String expDate, int pin, int accountNumber, String name) {
     try {
       if(VerifyCard.checkCard(cardNumber)) {
         File f = new File("dataAccount.ser");
@@ -279,7 +279,7 @@ public class Program {
   
         if (isCardNumExist) {
           System.out.println("Failed Exist!");
-          return;
+          return 1; // Card is exist
         }
   
         Account acc = new Account(cardNumber, expDate, pin, accountNumber, name);
@@ -294,12 +294,14 @@ public class Program {
 
       } else {
         System.out.println("Failed Invalid Number!");
-        return;
+        return 2; // Invalid number
       }
 
     } catch (Exception e) {
       System.out.println(e);
     }
+
+    return 3; // Unexpected error
   }
 
   @SuppressWarnings("unchecked")
@@ -324,5 +326,6 @@ public class Program {
     } catch (Exception e) {
       System.out.println(e);
     }
+
   }
 }
