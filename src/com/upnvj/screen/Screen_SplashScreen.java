@@ -96,7 +96,6 @@ public class Screen_SplashScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_startActionPerformed
-        // TODO add your handling code here:
         Screen_SignIn signin = new Screen_SignIn();
         signin.setVisible(true);
         dispose();

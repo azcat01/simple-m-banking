@@ -96,68 +96,37 @@ class VerifyCard {
   }
 }
 
-class Main {
-  public static void main(String[] args) {
-    long num = Long.parseLong("341241351673932");
-    long num2 = 4485703204713403L;
-    long num3 = 5472158029631581L;
-
-    Program p = new Program();
-    // System.out.println(p.formatBalance(1000000));
-    // System.out.println(VerifyCard.getCardType(num));
-    // p.createAccount(num, "01/22", 321321, 124534, "Irsyad");
-    // p.createAccount(num2, "01/24", 123123, 5394281, "Daffa");
-    // p.createAccount(num3, "01/23", 213123, 2495301, "Siddi");
-    p.login(num, 321321);
-    // p.login(num2, 1231231);
-    // p.login(num3, 213123);
-    // p.topupEmoney(50000, "085695403201");
-    // System.out.println(p.transferMoney(50000, 5394281));
-    // p.saveMoney(50000);
-    // p.saveMoney(50000);
-    // p.withdrawMoney(50000);
-
-    Account acc = p.getAccount();
-    // System.out.println(acc.getBalance());
-    ArrayList<Transaction> listTr = acc.getListTransaction();
-    ArrayList<Account> listacc = p.getListAccount() ;
-    ArrayList<Object> listObj = p.getRowTable() ;
-    // System.out.println(p.getTransactionOTP());
-
-    for (Object a : listObj) {
-      System.out.println(a);
-    }
-
-    // for (Account a : listacc) {
-    //   System.out.println(a.getName());
-    //   System.out.println(a.getBalance());
-    // }
-    
-    // for (Transaction tr : listTr) {
-    //   System.out.println(tr.getAccount().getBalance());
-    //   System.out.println(tr.getAccount().getName());
-    // }
-  }
-}
-
 public class Program {
   private ArrayList<Account> listAccount = new ArrayList<>();
   private ArrayList<Transaction> listTransaction = new ArrayList<>();
   private Account account;
+  private Transaction latestTransaction;
 
   public Account getAccount() {
     return account;
   }
 
+  public String getCardType() {
+    return VerifyCard.getCardType(this.account.getCardNumber());
+  }
+
+  public String getTransactionOTP() {
+    return latestTransaction.getOTP();
+  }
+
+  public String getTransactionDate() {
+    return latestTransaction.getDate();
+  }
+
+  public String getTransactionId() {
+    return Integer.toString(latestTransaction.getIdTransaction());
+  }
+
+
   public String formatBalance(int number) {
     NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
     String s = format.format(number) + ",-";
     return s;
-  }
-
-  public String getTransactionOTP() {
-    ArrayList<Transaction> tr = account.getListTransaction();
-    return tr.get(tr.size() - 1).getOTP();
   }
 
   public ArrayList<Account> getListAccount() {
@@ -180,11 +149,12 @@ public class Program {
     int response = 5;
 
     if(credit > 10_000_000) {
-      response = 1; // Not enough credits
+      response = 1; // Over the limit
     } else if (multiples == 0) {
       account.addBalance(credit);
       createTransaction(credit, "Deposit");
       updateBalance();
+      response = 0; // Success
     } else if (multiples != 0) {
       response = 2; // Wrong multiples
     } else {
@@ -199,9 +169,9 @@ public class Program {
     int response = 5;
 
     if(credit > 5_000_000){
-      response = 3; // Over the limit
+      response = 1; // Over the limit
     } else if (credit > account.getBalance()) {
-      response = 1; // Not enough credit
+      response = 3; // Not enough credit
     } else if (account.getBalance() >= 50000 && multiples == 0) {
       account.substractBalance(credit);
       createTransaction(credit, "Withdraw");
@@ -237,16 +207,13 @@ public class Program {
       
       if(isAccountExist){
         if(credit >= 10000 && credit <= account.getBalance()) {
-          System.out.println("Transfer dana berhasil!");
-          account.substractBalance(credit);
+          this.account.substractBalance(credit);
           partner.addBalance(credit);
           createTransaction(credit, "Transfer");
-          listAccount.set(account.getIdAccount() - 1, this.account);
           updateBalance();
           return 0; // Success
         } else {
-          System.out.println("Saldo anda tidak mencukupi atau nominal salah!");
-          return 2; // Not enough credit
+          return 3; // Not enough credit
         }
       } 
     } catch (Exception e) {
@@ -266,11 +233,10 @@ public class Program {
     } else if (credit > 10000 && credit <= account.getBalance()) {
       account.substractBalance(credit);
       createTransaction(credit, "Topup");
-      listAccount.set(account.getIdAccount() - 1, this.account);
       updateBalance();
-      response = 0;
+      response = 0; // Success
     } else {
-      response = 5;
+      response = 5; // Unexpected error
     }
 
     return response;
@@ -286,28 +252,25 @@ public class Program {
       for (Account existingAcc : listAccount) {
         if (existingAcc.getCardNumber() == cardNumber && existingAcc.getPin() == pin) {
           this.account = existingAcc;
-          System.out.println("Success!");
           return 0; // Success
         }
       }
       
-      System.out.println("Wrong Number or Pin!");
       return 1; // Wrong number or pin
 
     } catch (Exception e) {
       System.out.println(e);
     }
 
-    return 2;
+    return 2; // Unexpected error
   }
 
-  public int logout() {
+  public void logout() {
     this.account = null;
-    return 0;
   }
 
   @SuppressWarnings("unchecked") 
-  public int createAccount(long cardNumber, String expDate, int pin, int accountNumber, String name) {
+  public int createAccount(long cardNumber, String expDate, int pin, long accountNumber, String name) {
     try {
       if(VerifyCard.checkCard(cardNumber)) {
         File f = new File("dataAccount.ser");
@@ -327,7 +290,6 @@ public class Program {
         }
   
         if (isCardNumExist) {
-          System.out.println("Failed Exist!");
           return 1; // Card is exist
         }
   
@@ -339,10 +301,8 @@ public class Program {
         objectOut.writeObject(listAccount);
         objectOut.flush();
         objectOut.close();
-        System.out.println("Success");
 
       } else {
-        System.out.println("Failed Invalid Number!");
         return 2; // Invalid number
       }
 
@@ -362,10 +322,10 @@ public class Program {
         ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataTransaction.ser"));
         listTransaction = (ArrayList<Transaction>) objectIn.readObject();
         objectIn.close();
-
       }
 
       Transaction transaction = new Transaction(this.account, transactionType, credit);    
+      latestTransaction = transaction;
       listTransaction.add(transaction);
       ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataTransaction.ser"));
       objectOut.writeObject(listTransaction);

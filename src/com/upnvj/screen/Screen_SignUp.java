@@ -5,6 +5,7 @@
 package com.upnvj.screen;
 
 import javax.swing.JOptionPane;
+import com.upnvj.Program;
 
 /**
  *
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class Screen_SignUp extends javax.swing.JFrame {
 
+    Program program;
     /**
      * Creates new form Screen_SignUp
      */
@@ -203,26 +205,48 @@ public class Screen_SignUp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_signUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signUpActionPerformed
-        // TODO add your handling code here:
-        // try {
-        //     String fullName = field_fullName.getText();
-        //     String exDate = field_exDate.getText();
-        //     Integer PIN = Integer.parseInt(field_PIN.getText());
-        //     Long accNum = Long.parseLong(field_accNum.getText());
-        //     Long cardNum = Long.parseLong(field_cardNum.getText());
-        //     // if(cardNum.VerifyCard.) {
-
-        //     // }
-        // } catch (Exception e) {
-        //     JOptionPane
-        // }
-        Screen_Dashboard dashboard = new Screen_Dashboard();
-        dashboard.setVisible(true);
-        dispose();
+        try {
+            this.program = new Program();
+            String fullName = field_fullName.getText();
+            String exDate = field_exDate.getText();
+            Integer PIN = Integer.parseInt(field_PIN.getText());
+            Long accNum = Long.parseLong(field_accNum.getText());
+            Long cardNum = Long.parseLong(field_cardNum.getText());
+            int code = program.createAccount(cardNum, exDate, PIN, accNum, fullName);
+            switch (code) {
+                case 0:
+                    Screen_Dashboard dashboard = new Screen_Dashboard();
+                    dashboard.getDetails(program);
+                    dashboard.setValue();
+                    dashboard.setVisible(true);
+                    dispose();
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(rootPane, 
+                        "The card you're trying to enter has already exist!", 
+                        "", 2);
+                    break;
+                case 2:
+                    JOptionPane.showMessageDialog(rootPane, 
+                        "The card number you're trying to enter is invalid!", 
+                        "", 2);
+                    break;
+                case 3:
+                    JOptionPane.showMessageDialog(rootPane, 
+                        "Unexpected error", 
+                        "", 2);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, 
+                        "Invalid input!", 
+                        "", 2);
+        }
     }//GEN-LAST:event_button_signUpActionPerformed
 
     private void button_signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signInActionPerformed
-        // TODO add your handling code here:
         Screen_SignIn signin = new Screen_SignIn();
         signin.setVisible(true);
         dispose();

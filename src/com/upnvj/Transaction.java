@@ -9,7 +9,7 @@ public class Transaction implements Serializable {
   private static int idGenerator = 1;
   private int idTransaction;
   private int credit;
-  private String OTP = generateOTP();
+  private String OTP;
   private Account account;
   private String transactionType;
   private LocalDateTime date = LocalDateTime.now();
@@ -19,6 +19,7 @@ public class Transaction implements Serializable {
     this.account = account;
     this.transactionType = transactionType;
     this.credit = credit;
+    this.OTP = generateOTP();
   }
 
   public String getDate() {
@@ -52,5 +53,4 @@ public class Transaction implements Serializable {
     Integer code = 1000 + otp.nextInt(8999);
     return code.toString();
   }
-
 }
