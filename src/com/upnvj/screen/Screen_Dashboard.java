@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+
 import com.upnvj.Program;
 import com.upnvj.Account;
 
@@ -175,7 +176,6 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         table_transHistory.setBackground(new java.awt.Color(109, 152, 134));
         table_transHistory.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
         table_transHistory.setForeground(new java.awt.Color(255, 255, 255));
-        table_transHistory.setModel(tableModel);
         table_transHistory.setModel(tableModel);
         table_transHistory.setPreferredSize(new java.awt.Dimension(227, 80));
         sp_transHistory.setViewportView(table_transHistory);
@@ -457,17 +457,20 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button_signOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_signOutActionPerformed
+    private void button_signOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         int signOutConfirm = JOptionPane.showConfirmDialog(rootPane, 
             "Are you sure you want to sign out?", 
             "", 0);
+
         switch (signOutConfirm) {
             case 0:
+
                 program.logout();
                 Screen_SignIn signin = new Screen_SignIn();
                 signin.setVisible(true);
                 dispose();
                 break;
+
             default:
                 break;
         }
@@ -476,53 +479,65 @@ public class Screen_Dashboard extends javax.swing.JFrame {
     private void button_depositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_depositActionPerformed
         boolean valid = false;
         int balance = 0;
+
         do {
             try {
                 balance = Integer.parseInt(JOptionPane.showInputDialog(null, 
                     "Enter the amount to deposit :",
                     "Deposit", 3));
-                int code = program.saveMoney(balance);
-                switch (code) {
-                    case 0:
-                        valid = true;
-                        break;
-                    case 1:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "The amount entered is higher than the limit allowed!", 
-                            "", 2);
-                        break;
-                    case 2:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "The amount entered need to be in multiples of Rp50.000!", 
-                            "", 2);
-                        break;
-                    case 5:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "Invalid input!", 
-                            "", 2);
-                        break;
-                    default:
-                        break;
+
+                int depositConfirm = JOptionPane.showConfirmDialog(null, 
+                    "Deposit Amount\n" +
+                    "Rp" + balance + "\n\n" +
+                    "Are you sure you want to deposit?", 
+                    "Deposit", 0);
+                
+                if(depositConfirm == 0) {
+
+                    int code = program.saveMoney(balance);
+
+                    switch (code) {
+                        case 0:
+
+                            valid = true;
+                            String otp = program.getTransactionOTP();
+                            Screen_Dashboard dashboard = new Screen_Dashboard();
+                            dashboard.getDetails(program);
+                            dashboard.setValue();
+                            dashboard.setVisible(true);
+                            dispose();
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "OTP : " + otp, 
+                                "Deposit", 1);
+                            break;
+                            
+                        case 1:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "The amount entered is higher than the limit allowed!", 
+                                "", 2);
+                            break;
+                            
+                        case 2:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "The amount entered need to be in multiples of Rp50.000!", 
+                                "", 2);
+                            break;
+                            
+                        case 5:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Invalid input!", 
+                                "", 2);
+                            break;
+                            
+                        default:
+                            break;
+                    }
                 }
-            } catch (Exception e) {return;}
+            } catch (Exception e) { return; }
         } while (valid == false);
-        int depositConfirm = JOptionPane.showConfirmDialog(null, 
-            "Deposit Amount\n" +
-            "Rp" + balance + "\n\n" +
-            "Are you sure you want to deposit?", 
-            "Deposit", 0);
-        String otp = "";
-        if(depositConfirm == 0) {
-            otp = program.getTransactionOTP();
-            Screen_Dashboard dashboard = new Screen_Dashboard();
-            dashboard.getDetails(program);
-            dashboard.setValue();
-            dashboard.setVisible(true);
-            dispose();
-            JOptionPane.showMessageDialog(rootPane, 
-                "OTP : " + otp, 
-                "Deposit", 1);
-        }
     }//GEN-LAST:event_button_depositActionPerformed
 
     private void button_withDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_withDrawActionPerformed
@@ -533,174 +548,213 @@ public class Screen_Dashboard extends javax.swing.JFrame {
                 balance = Integer.parseInt(JOptionPane.showInputDialog(null, 
                     "Enter the amount to withdraw :",
                     "Withdraw", 3));
-                int code = program.withdrawMoney(balance);
-                switch (code) {
-                    case 0:
-                        valid = true;
-                        break;
-                    case 1:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "The amount entered is higher than the limit allowed!", 
-                            "", 2);
-                        break;
-                    case 2:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "The amount entered need to be in multiples of Rp50.000!", 
-                            "", 2);
-                        break;
-                    case 3:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "Insufficient credit balance!", 
-                            "", 2);
-                        break;
-                    case 5:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "Invalid input!", 
-                            "", 2);
-                        break;
-                    default:
-                        break;
+
+                int withdrawConfirm = JOptionPane.showConfirmDialog(null, 
+                    "Withdraw Amount\n" +
+                    "Rp" + balance + "\n\n" +
+                    "Are you sure you want to withdraw?", 
+                    "Withdraw", 0);
+
+                if(withdrawConfirm == 0) {
+                    int code = program.withdrawMoney(balance);
+                    switch (code) {
+                        case 0:
+                            valid = true;
+                            String otp = program.getTransactionOTP();
+
+                            Screen_Dashboard dashboard = new Screen_Dashboard();
+                            dashboard.getDetails(program);
+                            dashboard.setValue();
+                            dashboard.setVisible(true);
+                            dispose();
+                            
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "OTP : " + otp, 
+                                "Withdraw", 1);
+                            break;
+
+                        case 1:
+                        
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "The amount entered is higher than the limit allowed!", 
+                                "", 2);
+                            break;
+
+                        case 2:
+                        
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "The amount entered need to be in multiples of Rp50.000!", 
+                                "", 2);
+                            break;
+
+                        case 3:
+                        
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Insufficient credit balance!", 
+                                "", 2);
+                            break;
+
+                        case 5:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Invalid input!", 
+                                "", 2);
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
-            } catch (Exception e) {return;}
+
+            } catch (Exception e) { return; }
         } while (valid == false);
-        int withdrawConfirm = JOptionPane.showConfirmDialog(null, 
-            "Withdraw Amount\n" +
-            "Rp" + balance + "\n\n" +
-            "Are you sure you want to withdraw?", 
-            "Withdraw", 0);
-        String otp = "";
-        if(withdrawConfirm == 0) {
-            otp = program.getTransactionOTP();
-            Screen_Dashboard dashboard = new Screen_Dashboard();
-            dashboard.getDetails(program);
-            dashboard.setValue();
-            dashboard.setVisible(true);
-            dispose();
-            JOptionPane.showMessageDialog(rootPane, 
-                "OTP : " + otp, 
-                "Withdraw", 1);
-        }
+
     }//GEN-LAST:event_button_withDrawActionPerformed
 
     private void button_transferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_transferActionPerformed
+
         boolean valid = false;
         int balance = 0;
         int accNum = 0;
+        int transferConfirm = 1;
+        
         do {
             try {
+                
                 accNum = Integer.parseInt(JOptionPane.showInputDialog(null, 
                     "Enter destination account number :",
                     "Transfer", 3));
+
                 balance = Integer.parseInt(JOptionPane.showInputDialog(null, 
                     "Enter the amount to transfer :",
                     "Transfer", 3));
-                int code = program.transferMoney(balance, accNum);
-                switch (code) {
-                    case 0:
-                        valid = true;
-                        break;
-                    case 3:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "Insufficient credit balance!", 
-                            "", 2);
-                        break;
-                    case 6:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "Destination account entered doesn't exist!", 
-                            "", 2);
-                        break;
-                    default:
-                        break;
+
+                transferConfirm = JOptionPane.showConfirmDialog(null, 
+                    "Transfer Amount\n" +
+                    "Rp" + balance + "\n" +
+                    "To " + accNum + "\n\n" +
+                    "Are you sure you want to transfer?", 
+                    "Transfer", 0);
+                    
+                if (transferConfirm == 0) {
+                    int code = program.transferMoney(balance, accNum);
+                    switch (code) {
+                        case 0:
+
+                            valid = true;
+                            String date = program.getTransactionDate();
+                            String id = program.getTransactionId();
+
+                            Screen_Dashboard dashboard = new Screen_Dashboard();
+                            dashboard.getDetails(program);
+                            dashboard.setValue();
+                            dashboard.setVisible(true);
+                            dispose();
+                            
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Transfer was successful\n\n" +
+                                "ID          : " + id + "\n" +
+                                "Date        : " + date + "\n" +
+                                "Destination : " + accNum + "\n" +
+                                "Amount      : Rp" + balance,
+                                "Transfer", 1);
+                            break;
+
+                        case 3:
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Insufficient credit balance!", 
+                                "", 2);
+                            break;
+
+                        case 6:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Destination account entered doesn't exist!", 
+                                "", 2);
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
-            } catch (Exception e) {return;}
+            } catch (Exception e) { return; }
         } while (valid == false);
-        int transferConfirm = JOptionPane.showConfirmDialog(null, 
-            "Transfer Amount\n" +
-            "Rp" + balance + "\n" +
-            "To" + accNum + "\n\n" +
-            "Are you sure you want to transfer?", 
-            "Transfer", 0);
-
-        String date = program.getTransactionDate();
-        String id = program.getTransactionId();
-
-        if(transferConfirm == 0) {
-            Screen_Dashboard dashboard = new Screen_Dashboard();
-            dashboard.getDetails(program);
-            dashboard.setValue();
-            dashboard.setVisible(true);
-            dispose();
-            JOptionPane.showMessageDialog(rootPane, 
-                "Transfer was successful\n\n" +
-                "ID          : " + id + "\n" +
-                "Date        : " + date + "\n" +
-                "Destination : " + accNum + "\n" +
-                "Amount      : Rp" + balance,
-                "Transfer", 1);
-        }
     }//GEN-LAST:event_button_transferActionPerformed
 
     private void button_emoneyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_emoneyActionPerformed
+
         boolean valid = false;
         int balance = 0;
         String telpNum = "";
+        
         do {
             try {
                 telpNum = JOptionPane.showInputDialog(null, 
                     "Enter destination phone number :",
                     "Top Up E-Money", 3);
+                    
                 balance = Integer.parseInt(JOptionPane.showInputDialog(null, 
                     "Enter the amount to transfer :",
                     "Top Up E-Money", 3));
-                int code = program.topupEmoney(balance, telpNum);
-                switch (code) {
-                    case 0:
-                        valid = true;
-                        break;
-                    case 1:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "Insufficient credit balance!", 
-                            "", 2);
-                        break;
-                    case 2:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "The amount entered need to be higher than Rp10.000!", 
-                            "", 2);
-                        break;
-                    case 5:
-                        JOptionPane.showMessageDialog(rootPane, 
-                            "Invalid input!", 
-                            "", 2);
-                        break;
-                    default:
-                        break;
-                }
-            } catch (Exception e) {return;}
-        } while (valid == false);
-        int emoneyConfirm = JOptionPane.showConfirmDialog(null, 
-            "Top Up Amount\n" +
-            "Rp" + balance + "\n" +
-            "To" + telpNum + "\n\n" +
-            "Are you sure you want to top up?", 
-            "Top Up E-Money", 0);
 
-        String date = program.getTransactionDate();
-        String id = program.getTransactionId();
-        
-        if(emoneyConfirm == 0) {
-            Screen_Dashboard dashboard = new Screen_Dashboard();
-            dashboard.getDetails(program);
-            dashboard.setValue();
-            dashboard.setVisible(true);
-            dispose();
-            JOptionPane.showMessageDialog(rootPane, 
-                "Top Up was successful\n\n" +
-                "ID          : " + id + "\n" +
-                "Date        : " + date + "\n" +
-                "Destination : " + telpNum + "\n" +
-                "Amount      : Rp" + balance,
-                "Top Up E-Money", 1);
-        }
+                int emoneyConfirm = JOptionPane.showConfirmDialog(null, 
+                    "Top Up Amount\n" +
+                    "Rp" + balance + "\n" +
+                    "To" + telpNum + "\n\n" +
+                    "Are you sure you want to top up?", 
+                    "Top Up E-Money", 0);      
+                              
+                if(emoneyConfirm == 0) {
+                    int code = program.topupEmoney(balance, telpNum);
+                    switch (code) {
+                        case 0:
+
+                            valid = true;
+                            String date = program.getTransactionDate();
+                            String id = program.getTransactionId();
+                            
+                            Screen_Dashboard dashboard = new Screen_Dashboard();
+                            dashboard.getDetails(program);
+                            dashboard.setValue();
+                            dashboard.setVisible(true);
+                            dispose();
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Top Up was successful\n\n" +
+                                "ID          : " + id + "\n" +
+                                "Date        : " + date + "\n" +
+                                "Destination : " + telpNum + "\n" +
+                                "Amount      : Rp" + balance,
+                                "Top Up E-Money", 1);
+                            break;
+
+                        case 1:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Insufficient credit balance!", 
+                                "", 2);
+                            break;
+                            
+                        case 2:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "The amount entered need to be higher than Rp10.000!", 
+                                "", 2);
+                            break;
+
+                        case 5:
+
+                            JOptionPane.showMessageDialog(rootPane, 
+                                "Invalid input!", 
+                                "", 2);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            } catch (Exception e) { return; }
+        } while (valid == false);
     }//GEN-LAST:event_button_emoneyActionPerformed
 
     /**

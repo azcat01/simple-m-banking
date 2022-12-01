@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 class VerifyCard {
 
@@ -119,9 +121,8 @@ public class Program {
   }
 
   public String getTransactionId() {
-    return Integer.toString(latestTransaction.getIdTransaction());
+    return latestTransaction.getIdTransaction();
   }
-
 
   public String formatBalance(int number) {
     NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("in", "ID"));
@@ -134,9 +135,11 @@ public class Program {
   }
 
   public ArrayList<Object> getRowTable() {
+
     ArrayList<Object> objList = new ArrayList<>();
     ArrayList<Transaction> tr = account.getListTransaction();
     Collections.reverse(tr);
+
     for (Transaction t : tr) {
       objList.add(new Object[] {t.getDate(), t.getTransactionType(), Integer.toString(t.getCredit())});
     }
@@ -184,7 +187,6 @@ public class Program {
     }
 
     return response;
-  
   }
 
   @SuppressWarnings("unchecked")
@@ -193,8 +195,13 @@ public class Program {
       Boolean isAccountExist = false;
       Account partner = null;
 
-      ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
+      FileInputStream fileIn = new FileInputStream("dataAccount.ser");
+      GZIPInputStream compressedFile = new GZIPInputStream(fileIn);
+      ObjectInputStream objectIn = new ObjectInputStream(compressedFile);
       listAccount = (ArrayList<Account>) objectIn.readObject();
+
+      fileIn.close();
+      compressedFile.close();
       objectIn.close();
       
       for (Account existingAcc : listAccount) {
@@ -207,8 +214,9 @@ public class Program {
       
       if(isAccountExist){
         if(credit >= 10000 && credit <= account.getBalance()) {
-          this.account.substractBalance(credit);
+          account.substractBalance(credit);
           partner.addBalance(credit);
+          listAccount.set(account.getIdAccount() - 1, account);
           createTransaction(credit, "Transfer");
           updateBalance();
           return 0; // Success
@@ -230,7 +238,7 @@ public class Program {
       response = 2; // Minimal credit is 10000
     } else if (credit > account.getBalance()) {
       response = 1; // Not enough credit
-    } else if (credit > 10000 && credit <= account.getBalance()) {
+    } else if (credit >= 10000 && credit <= account.getBalance()) {
       account.substractBalance(credit);
       createTransaction(credit, "Topup");
       updateBalance();
@@ -245,8 +253,12 @@ public class Program {
   @SuppressWarnings("unchecked")
   public int login(long cardNumber, int pin) {
     try {
-      ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
+      FileInputStream fileIn = new FileInputStream("dataAccount.ser");
+      GZIPInputStream compressedFile = new GZIPInputStream(fileIn);
+      ObjectInputStream objectIn = new ObjectInputStream(compressedFile);
       listAccount = (ArrayList<Account>) objectIn.readObject();
+      fileIn.close();
+      compressedFile.close();
       objectIn.close();
 
       for (Account existingAcc : listAccount) {
@@ -277,8 +289,12 @@ public class Program {
         Boolean isCardNumExist = false;
   
         if (f.exists()) {
-          ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataAccount.ser"));
+          FileInputStream fileIn = new FileInputStream("dataAccount.ser");
+          GZIPInputStream compressedFile = new GZIPInputStream(fileIn);
+          ObjectInputStream objectIn = new ObjectInputStream(compressedFile);
           listAccount = (ArrayList<Account>) objectIn.readObject();
+          fileIn.close();
+          compressedFile.close();
           objectIn.close();
           
           for (Account existingAcc : listAccount) {
@@ -297,11 +313,17 @@ public class Program {
         listAccount.add(acc);
         this.account = acc;
   
-        ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataAccount.ser"));
+        FileOutputStream fileOut = new FileOutputStream("dataAccount.ser");
+        GZIPOutputStream compressedFile = new GZIPOutputStream(fileOut);
+        ObjectOutputStream objectOut = new ObjectOutputStream(compressedFile);
         objectOut.writeObject(listAccount);
         objectOut.flush();
         objectOut.close();
+        fileOut.close();
+        compressedFile.flush();
+        compressedFile.close();
 
+        return 0;
       } else {
         return 2; // Invalid number
       }
@@ -319,31 +341,48 @@ public class Program {
       File f = new File("dataTransaction.ser");
       
       if (f.exists()) {
-        ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataTransaction.ser"));
+        FileInputStream fileIn = new FileInputStream("dataTransaction.ser");
+        GZIPInputStream compressedFile = new GZIPInputStream(fileIn);
+        ObjectInputStream objectIn = new ObjectInputStream(compressedFile);
         listTransaction = (ArrayList<Transaction>) objectIn.readObject();
+
+        fileIn.close();
+        compressedFile.close();
         objectIn.close();
       }
 
       Transaction transaction = new Transaction(this.account, transactionType, credit);    
       latestTransaction = transaction;
       listTransaction.add(transaction);
-      ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataTransaction.ser"));
+
+      FileOutputStream fileOut = new FileOutputStream("dataTransaction.ser");
+      GZIPOutputStream compressedFile = new GZIPOutputStream(fileOut);
+      ObjectOutputStream objectOut = new ObjectOutputStream(compressedFile);
+
       objectOut.writeObject(listTransaction);
       objectOut.flush();
       objectOut.close();
+      fileOut.close();
+      compressedFile.flush();
+      compressedFile.close();
 
     } catch (Exception e) {
       System.out.println(e);
     }
-
   }
 
   public void updateBalance() {
     try {
-      ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream("dataAccount.ser"));
+      FileOutputStream fileOut = new FileOutputStream("dataAccount.ser");
+      GZIPOutputStream compressedFile = new GZIPOutputStream(fileOut);
+      ObjectOutputStream objectOut = new ObjectOutputStream(compressedFile);
+
       objectOut.writeObject(listAccount);
       objectOut.flush();
       objectOut.close();
+      fileOut.close();
+      compressedFile.flush();
+      compressedFile.close();
 
     } catch (Exception e) {
       System.out.println(e);

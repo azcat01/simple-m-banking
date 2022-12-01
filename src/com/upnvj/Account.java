@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
 
 public class Account implements Serializable {
   private static int idGenerate = 1;
@@ -57,8 +58,12 @@ public class Account implements Serializable {
   @SuppressWarnings("unchecked")
   public ArrayList<Transaction> getListTransaction() {
     try {
-      ObjectInputStream objectIn = new ObjectInputStream(new FileInputStream("dataTransaction.ser"));
+      FileInputStream fileIn = new FileInputStream("dataTransaction.ser");
+      GZIPInputStream compressedFile = new GZIPInputStream(fileIn);
+      ObjectInputStream objectIn = new ObjectInputStream(compressedFile);
       ArrayList<Transaction> listTransaction = (ArrayList<Transaction>) objectIn.readObject();
+      fileIn.close();
+      compressedFile.close();
       objectIn.close();
 
       for (Transaction transaction : listTransaction) {
@@ -67,9 +72,7 @@ public class Account implements Serializable {
         }
       }
 
-    } catch (Exception e) {
-      System.out.println(e);
-    }
+    } catch (Exception e) { }
 
     return this.listTransaction;
   }

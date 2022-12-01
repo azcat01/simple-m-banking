@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.UUID;
 
 public class Transaction implements Serializable {
-  private static int idGenerator = 1;
-  private int idTransaction;
+  private String idTransaction;
   private int credit;
   private String OTP;
   private Account account;
@@ -15,7 +15,7 @@ public class Transaction implements Serializable {
   private LocalDateTime date = LocalDateTime.now();
 
   public Transaction(Account account, String transactionType, int credit) {
-    this.idTransaction = idGenerator++;
+    this.idTransaction = UUID.randomUUID().toString();
     this.account = account;
     this.transactionType = transactionType;
     this.credit = credit;
@@ -40,7 +40,7 @@ public class Transaction implements Serializable {
     return transactionType;
   }
 
-  public int getIdTransaction() {
+  public String getIdTransaction() {
     return idTransaction;
   }
 
