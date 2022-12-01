@@ -23,7 +23,7 @@ public class Transaction implements Serializable {
   }
 
   public String getDate() {
-    DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("dd/MM HH:mm:ss");
     String formattedDate = date.format(formatObj);
     return formattedDate;
   }

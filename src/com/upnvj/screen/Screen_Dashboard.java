@@ -56,8 +56,10 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         label_cardType.setText(cardType);
         label_cardBalance.setText(formatBalance(cardBalance));
         rowTable = program.getRowTable(); // String[][] array of String
-        for(int i = 0; i < rowTable.length; i++) {
-            tableModel.addRow(rowTable);
+        for (int i = 0; i < rowTable.length; i++) {
+            tableModel = (DefaultTableModel) table_transHistory.getModel();
+            tableModel.addRow(rowTable[i]);
+            // tableModel.insertRow(tableModel.getRowCount(), arr);
         }
     }
 
@@ -90,7 +92,6 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         panel_transHistory = new javax.swing.JPanel();
         sp_transHistory = new javax.swing.JScrollPane();
         table_transHistory = new javax.swing.JTable();
-        tableModel = (DefaultTableModel) table_transHistory.getModel();
         panel_footer = new javax.swing.JPanel();
         button_signOut = new javax.swing.JButton();
         panel_mainPanel = new javax.swing.JPanel();
@@ -168,13 +169,15 @@ public class Screen_Dashboard extends javax.swing.JFrame {
 
         sp_transHistory.setPreferredSize(new java.awt.Dimension(220, 230));
 
+        table_transHistory.setAutoCreateRowSorter(true);
         table_transHistory.setBackground(new java.awt.Color(109, 152, 134));
+        table_transHistory.setForeground(new java.awt.Color(247, 247, 247));
         table_transHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {}, new String [] { "Date", "Type", "Balance" }
         ));
-        table_transHistory.setMaximumSize(new java.awt.Dimension(220, 230));
-        table_transHistory.setMinimumSize(new java.awt.Dimension(220, 230));
-        table_transHistory.setPreferredSize(new java.awt.Dimension(220, 230));
+        table_transHistory.setMaximumSize(new java.awt.Dimension(220, 200));
+        table_transHistory.setMinimumSize(new java.awt.Dimension(220, 200));
+        table_transHistory.setPreferredSize(new java.awt.Dimension(220, 200));
         sp_transHistory.setViewportView(table_transHistory);
 
         panel_transHistory.add(sp_transHistory);
