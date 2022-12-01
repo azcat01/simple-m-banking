@@ -4,8 +4,6 @@
  */
 package com.upnvj.screen;
 
-import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -37,7 +35,7 @@ public class Screen_Dashboard extends javax.swing.JFrame {
     private String cardType;
     private int cardBalance;
 
-    private DefaultTableModel tableModel = new DefaultTableModel();
+    private DefaultTableModel tableModel;
     private String[][] rowTable;
     
     public void getDetails(Program p) {
@@ -58,7 +56,9 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         label_cardType.setText(cardType);
         label_cardBalance.setText(formatBalance(cardBalance));
         rowTable = program.getRowTable(); // String[][] array of String
-        
+        for(int i = 0; i < rowTable.length; i++) {
+            tableModel.addRow(rowTable);
+        }
     }
 
     public static String splitCardNum(String s) {
@@ -90,6 +90,7 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         panel_transHistory = new javax.swing.JPanel();
         sp_transHistory = new javax.swing.JScrollPane();
         table_transHistory = new javax.swing.JTable();
+        tableModel = (DefaultTableModel) table_transHistory.getModel();
         panel_footer = new javax.swing.JPanel();
         button_signOut = new javax.swing.JButton();
         panel_mainPanel = new javax.swing.JPanel();
