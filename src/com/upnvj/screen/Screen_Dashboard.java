@@ -38,7 +38,7 @@ public class Screen_Dashboard extends javax.swing.JFrame {
     private int cardBalance;
 
     private DefaultTableModel tableModel = new DefaultTableModel();
-    private ArrayList<Object> rowTable;
+    private String[][] rowTable;
     
     public void getDetails(Program p) {
         this.program = p;
@@ -57,10 +57,8 @@ public class Screen_Dashboard extends javax.swing.JFrame {
         label_exDate.setText(exDate);
         label_cardType.setText(cardType);
         label_cardBalance.setText(formatBalance(cardBalance));
-        rowTable = program.getRowTable();
-        for (Object row : rowTable) {
-            tableModel.addRow((Object[]) row);
-        }
+        rowTable = program.getRowTable(); // String[][] array of String
+        
     }
 
     public static String splitCardNum(String s) {

@@ -3,6 +3,7 @@ package com.upnvj;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
@@ -56,7 +57,28 @@ public class Account implements Serializable {
   }
 
   @SuppressWarnings("unchecked")
-  public ArrayList<Transaction> getListTransaction() {
+  // public ArrayList<Transaction> getListTransaction() {
+  //   try {
+  //     FileInputStream fileIn = new FileInputStream("dataTransaction.ser");
+  //     GZIPInputStream compressedFile = new GZIPInputStream(fileIn);
+  //     ObjectInputStream objectIn = new ObjectInputStream(compressedFile);
+  //     ArrayList<Transaction> listTransaction = (ArrayList<Transaction>) objectIn.readObject();
+  //     fileIn.close();
+  //     compressedFile.close();
+  //     objectIn.close();
+
+  //     for (Transaction transaction : listTransaction) {
+  //       if (transaction.getAccount().getAccountNumber() == this.getAccountNumber()) {
+  //         this.listTransaction.add(transaction);
+  //       }
+  //     }
+
+  //   } catch (Exception e) { }
+
+  //   return this.listTransaction;
+  // }
+
+  public String[][] getListTransaction() {
     try {
       FileInputStream fileIn = new FileInputStream("dataTransaction.ser");
       GZIPInputStream compressedFile = new GZIPInputStream(fileIn);
@@ -72,9 +94,26 @@ public class Account implements Serializable {
         }
       }
 
+      int listArraySize = this.listTransaction.size();
+      String[][] arrStringTransaction = new String[listArraySize][2];
+      Transaction tr;
+      String date = "";
+      String type = "";
+      String valueBalance = "";
+
+      for(int i = 0; i < listArraySize; i++) {
+        tr = this.listTransaction.get(i);
+        date = tr.getDate();
+        type = tr.getTransactionType();
+        valueBalance = Integer.toString(tr.getCredit());
+        arrStringTransaction[i] = new String[] {date, type, valueBalance};
+      }
+
+      return arrStringTransaction;
+
     } catch (Exception e) { }
 
-    return this.listTransaction;
+    return null;
   }
 
   public void addBalance(int balance) {

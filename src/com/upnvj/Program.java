@@ -134,17 +134,21 @@ public class Program {
     return listAccount;
   }
 
-  public ArrayList<Object> getRowTable() {
+  // public ArrayList<Object> getRowTable() {
 
-    ArrayList<Object> objList = new ArrayList<>();
-    ArrayList<Transaction> tr = account.getListTransaction();
-    Collections.reverse(tr);
+  //   ArrayList<Object> objList = new ArrayList<>();
+  //   ArrayList<Transaction> tr = account.getListTransaction();
+  //   Collections.reverse(tr);
 
-    for (Transaction t : tr) {
-      objList.add(new Object[] {t.getDate(), t.getTransactionType(), Integer.toString(t.getCredit())});
-    }
+  //   for (Transaction t : tr) {
+  //     objList.add(new Object[] {t.getDate(), t.getTransactionType(), Integer.toString(t.getCredit())});
+  //   }
 
-    return objList;
+  //   return objList;
+  // }
+
+  public String[][] getRowTable() {
+    return account.getListTransaction();
   }
 
   public int saveMoney(int credit) {
