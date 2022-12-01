@@ -37,7 +37,7 @@ public class Screen_Dashboard extends javax.swing.JFrame {
     private String cardType;
     private int cardBalance;
 
-    private DefaultTableModel tableModel;
+    private DefaultTableModel tableModel = new DefaultTableModel();
     private ArrayList<Object> rowTable;
     
     public void getDetails(Program p) {
@@ -164,38 +164,21 @@ public class Screen_Dashboard extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(new Object[] {
-            "Date", "Type", "Balance"
-        });
-        
         panel_transHistory.setBackground(new java.awt.Color(57, 62, 70));
         panel_transHistory.setPreferredSize(new java.awt.Dimension(250, 250));
-        
-        table_transHistory.setAutoCreateRowSorter(true);
+
+        sp_transHistory.setPreferredSize(new java.awt.Dimension(220, 230));
+
         table_transHistory.setBackground(new java.awt.Color(109, 152, 134));
-        table_transHistory.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        table_transHistory.setForeground(new java.awt.Color(255, 255, 255));
-        table_transHistory.setModel(tableModel);
-        table_transHistory.setPreferredSize(new java.awt.Dimension(227, 80));
+        table_transHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {}, new String [] { "Date", "Type", "Balance" }
+        ));
+        table_transHistory.setMaximumSize(new java.awt.Dimension(220, 230));
+        table_transHistory.setMinimumSize(new java.awt.Dimension(220, 230));
+        table_transHistory.setPreferredSize(new java.awt.Dimension(220, 230));
         sp_transHistory.setViewportView(table_transHistory);
 
-        javax.swing.GroupLayout panel_transHistoryLayout = new javax.swing.GroupLayout(panel_transHistory);
-        panel_transHistory.setLayout(panel_transHistoryLayout);
-        panel_transHistoryLayout.setHorizontalGroup(
-            panel_transHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_transHistoryLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(sp_transHistory, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panel_transHistoryLayout.setVerticalGroup(
-            panel_transHistoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_transHistoryLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(sp_transHistory, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        panel_transHistory.add(sp_transHistory);
 
         panel_footer.setBackground(new java.awt.Color(57, 62, 70));
         panel_footer.setPreferredSize(new java.awt.Dimension(250, 60));
